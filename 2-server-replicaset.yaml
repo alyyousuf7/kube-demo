@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: server-rs
+  labels:
+    app: server
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: serveimages
+  template:
+    metadata:
+      labels:
+        app: serveimages
+        tier: frontend
+    spec:
+      containers:
+      - name: myserver
+        image: alyyousuf7/kube-demo:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
